@@ -11,5 +11,6 @@ namespace TaxCalculator.DTO
     public RateType RateType { get; set; }
     [Required]
     public double Rate { get; set; }
+    public int RegionId { get; internal set; }
   }
 }

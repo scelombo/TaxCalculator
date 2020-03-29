@@ -1,8 +1,8 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace TaxCalculator.Test
 {
-  public class Tests
+  public class CalculationServiceTest
   {
     [SetUp]
     public void Setup()

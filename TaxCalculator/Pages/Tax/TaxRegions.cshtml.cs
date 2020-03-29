@@ -30,6 +30,10 @@ namespace TaxCalculator.Pages.Tax
     public async Task OnGet(int id)
     {
       RegionId = id;
+      regionTax = new RegionTaxModel
+      {
+        RegionId = id
+      };
 
       var result = await _regionService.GetRegionById(id);
       if (result.success)
@@ -40,22 +44,21 @@ namespace TaxCalculator.Pages.Tax
 
     public async Task<IActionResult> OnPost()
     {
+      regionTax.RegionId =  int.Parse(Request.Query["Id"]);
       var result = await _regionTaxService.CreateRegionTax(regionTax);
       if (result.success)
       {
         region = result.data as Region;
-        return Page();
       }
-      else
+
+      return RedirectToPage("Notify", new
       {
-        return RedirectToPage("Notify", new
-        {
-          success = result.success,
-          message = result.message,
-          RegionId = RegionId
-        }
-        );
+        success = result.success,
+        message = result.message,
+        regionId = regionTax.RegionId
       }
+      );
+
     }
   }
 }

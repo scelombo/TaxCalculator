@@ -23,10 +23,7 @@ function loadDataTable(id) {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                        <a href="/regions/RegionTaxes?id=${data}" class='far fa-edit text-success' title='Edit Region'>
-                        </a>
-                        &nbsp;
-                        <a onclick=Delete('/api/RegionTaxes/'+${data}) style='cursor:pointer; width:70px;'>
+                           <a onclick=Delete('/api/RegionTaxes/'+${data}) style='cursor:pointer; width:70px;'>
                             <i class='fas fa-trash-alt text-danger' title='Delete Region'></i>
                         </a>
                         </div>`;

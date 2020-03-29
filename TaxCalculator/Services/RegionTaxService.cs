@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace TaxCalculator.Services
             RateType = lst.RateType.ToString(),
             Status = lst.Status.ToString(),
             FromAmount = lst.FromAmount,
-            ToAmount = lst.ToAmount?.ToString() ?? "Infinite"
+            ToAmount =  lst.ToAmount?.ToString() ?? "Infinite"
           });
       });
 
@@ -97,9 +98,17 @@ namespace TaxCalculator.Services
         return response;
       }
 
+
+      ReshufleTaxLines(request);
+      
+
       var RegionTax = new RegionTax
       {
-
+        FromAmount = request.FromAmount,
+        Rate = request.Rate,
+        RateType = request.RateType,
+        RegionId = request.RegionId,
+        ToAmount = request.ToAmount,
         Status = RecordStatus.Active
       };
 
@@ -114,6 +123,31 @@ namespace TaxCalculator.Services
       _logger.Information($"{response.message}", RegionTax);
 
       return response;
+    }
+
+    private void ReshufleTaxLines(RegionTaxModel request)
+    {
+      // The biggest tax amount must always be infinity (null)
+      var toAmount = _context.RegionTaxes.Any(t => t.RegionId == request.RegionId && t.ToAmount > request.ToAmount && t.Status == RecordStatus.Active) ? request.ToAmount : null;
+
+      //End the previous line on the current
+      if (_context.RegionTaxes.Any(t => t.RegionId == request.RegionId &&
+                                   t.FromAmount <= request.ToAmount &&
+                                   t.ToAmount == null &&
+                                   t.Status == RecordStatus.Active))
+      {
+        var prevousLine = _context.RegionTaxes.First(t => t.RegionId == request.RegionId &&
+                                  t.FromAmount <= request.ToAmount &&
+                                  t.ToAmount == null &&
+                                  t.Status == RecordStatus.Active);
+
+        prevousLine.ToAmount = request.FromAmount - 0.1;
+        _context.RegionTaxes.Update(prevousLine);
+        _context.SaveChanges();
+
+        request.ToAmount = toAmount;
+
+      }
     }
 
     public async Task<Response> UpdateRegionTax(int id, RegionTaxModel request)
@@ -224,12 +258,12 @@ namespace TaxCalculator.Services
         return response;
       }
 
-      if (_context.RegionTaxes.Any( rt => rt.ToAmount >= request.ToAmount  || rt.FromAmount <= request.FromAmount))
-      {
-        response.message += $"Region Tax amount should not overlap. Only one rate must exist per rage.";
-        response.success = false;
-        return response;
-      }
+      //if (_context.RegionTaxes.Any( rt => rt.ToAmount >= request.ToAmount  || rt.FromAmount <= request.FromAmount))
+      //{
+      //  response.message += $"Region Tax amount should not overlap. Only one rate must exist per rage.";
+      //  response.success = false;
+      //  return response;
+      //}
 
       if (request.Rate <= 0)
       {
@@ -238,12 +272,12 @@ namespace TaxCalculator.Services
         return response;
       }
 
-      if (_context.RegionTaxes.Any(rt => rt.ToAmount >= request.ToAmount && (rt.RateType == request.RateType && rt.Rate >= request.Rate)))
-      {
-        response.message += $"Tax rate of {request.Rate} is already set for an equal or less tax bracket.";
-        response.success = false;
-        return response;
-      }
+      //if (_context.RegionTaxes.Any(rt => rt.ToAmount >= request.ToAmount && (rt.RateType == request.RateType && rt.Rate >= request.Rate)))
+      //{
+      //  response.message += $"Tax rate of {request.Rate} is already set for an equal or less tax bracket.";
+      //  response.success = false;
+      //  return response;
+      //}
 
       return response;
     }
