@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 
 namespace TaxCalculator.Pages.Tax
 {
@@ -8,20 +7,21 @@ namespace TaxCalculator.Pages.Tax
   {
     public string msg;
     public bool successful;
-    public int RegionId;
-    public void OnGet(bool success, string message, int regionId)
+    public void OnGet(bool success, string message, int? regionId)
     {
       msg = message;
       successful = success;
-      RegionId = regionId;
     }
 
     public IActionResult OnPost()
     {
-      return RedirectToPage("TaxRegions", new
-      {
-        Id = int.Parse(Request.Query["regionId"])
-      });
+      if (int.TryParse(Request.Query["regionId"], out int regionId))
+        return RedirectToPage("/Tax/TaxRegions", new
+        {
+          Id = regionId
+        });
+
+      return RedirectToPage("Index");
     }
   }
 }

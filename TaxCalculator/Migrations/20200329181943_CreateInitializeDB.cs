@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TaxCalculator.Migrations
 {
-    public partial class RegionTaxUpdatejw : Migration
+    public partial class CreateInitializeDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +12,12 @@ namespace TaxCalculator.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(nullable: false),
+                    PostalCode = table.Column<string>(nullable: true),
+                    AnnualIncome = table.Column<double>(nullable: false),
+                    Result = table.Column<double>(nullable: false),
+                    CalclulationMetadata = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,7 +48,8 @@ namespace TaxCalculator.Migrations
                     ToAmount = table.Column<double>(nullable: true),
                     RateType = table.Column<int>(nullable: false),
                     Rate = table.Column<double>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    RegionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

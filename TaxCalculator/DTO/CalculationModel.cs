@@ -1,11 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using TaxCalculator.Utilities;
 
 namespace TaxCalculator.DTO
 {
   public class CalculationModel
   {
-    [Key]
-    public int Id { get; set; }
+    [Required]
+    public string PostalCode { get; set; }
+
+    [Required]
+    public Double Income { get; set; }
 
   }
 }

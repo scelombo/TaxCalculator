@@ -39,7 +39,7 @@ namespace TaxCalculator
       services.AddSingleton<ICalculationTypeService, CalculationTypeService>();
       services.AddSingleton<IRegionService, RegionService>();
       services.AddSingleton<IRegionTaxService, RegionTaxService>();
-      //services.AddSingleton<ICalculationService, CalculationService>();
+      services.AddSingleton<ICalculationService, CalculationService>();
 
       services.AddControllersWithViews();
       services.AddRazorPages()

@@ -26,6 +26,21 @@ namespace TaxCalculator.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("AnnualIncome")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CalclulationMetadata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Result")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.ToTable("Calculations");
@@ -95,6 +110,9 @@ namespace TaxCalculator.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("RateType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")

@@ -51,14 +51,12 @@ namespace TaxCalculator.Pages.Tax
         region = result.data as Region;
       }
 
-      return RedirectToPage("Notify", new
+      return RedirectToPage("/Notify", new
       {
         success = result.success,
         message = result.message,
         regionId = regionTax.RegionId
-      }
-      );
-
+      });
     }
   }
 }

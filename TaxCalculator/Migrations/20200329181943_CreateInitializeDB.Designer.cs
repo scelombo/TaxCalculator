@@ -10,8 +10,8 @@ using TaxCalculator.Utilities;
 namespace TaxCalculator.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200326144101_RegionTaxUpdatejw")]
-    partial class RegionTaxUpdatejw
+    [Migration("20200329181943_CreateInitializeDB")]
+    partial class CreateInitializeDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,21 @@ namespace TaxCalculator.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AnnualIncome")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CalclulationMetadata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Result")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -97,6 +112,9 @@ namespace TaxCalculator.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("RateType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
