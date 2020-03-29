@@ -1,0 +1,27 @@
+﻿@page
+@model TaxCalculator.Pages.Tax.NotifyModel
+
+
+@if (@Model.successful)
+{
+    <div class="alert alert-success text-cente" role="alert">
+        <h4 class="alert-heading">Success</h4>
+        <p>@Model.msg</p>
+        <hr>
+        <p class="mb-0">Region tax line added successfully.</p>
+    </div>
+}
+
+@if (@Model.successful == false)
+{
+    <div class="alert alert-danger text-cente" role="alert">
+        <h4 class="alert-heading">Validation Failure</h4>
+        <p>@Model.msg</p>
+        <hr>
+        <p class="mb-0">Error trying to create region tax line.</p>
+    </div>
+}
+
+<div class="col-12 text-center">
+    <a asp-page="TaxRegions?id=${@Model.RegionId}" class="btn btn-success form-control">Ok</a>
+</div>
